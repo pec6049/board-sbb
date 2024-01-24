@@ -1,35 +1,32 @@
-package com.mysite.sbb;
+package com.mysite.sbb.answer;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
-import jakarta.persistence.CascadeType;
+import com.mysite.sbb.question.Question;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.ManyToOne;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
 @Entity
-public class Question {
+public class Answer {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	
-	@Column(length = 200)
-	private String subject;
-	
 	@Column(columnDefinition = "TEXT")
 	private String content;
 	
 	private LocalDateTime createDate;
-	
-	@OneToMany(mappedBy = "question", cascade = CascadeType.REMOVE)
-	private List<Answer> answerList; //1:N 관계이므로 List 형태
+
+	@ManyToOne
+	private Question question; //질문 엔티티를 참조하기 위해, N:1관계
 }
