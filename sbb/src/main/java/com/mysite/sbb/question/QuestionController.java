@@ -3,6 +3,7 @@ package com.mysite.sbb.question;
 import java.security.Principal;
 
 import org.springframework.data.domain.Page;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -41,11 +42,13 @@ public class QuestionController {
 		return "question_detail";
 	}
 	
+	@PreAuthorize("isAuthenticated()")
 	@GetMapping(value = "/create")
 	public String questionCreate(QuestionForm questionForm) {
 		return "question_form";
 	}
 	
+	@PreAuthorize("isAuthenticated()")
 	@PostMapping(value = "/create")
 	public String questionCreate(@Valid QuestionForm questionForm, BindingResult bindingResult, Principal principal) {
 		if(bindingResult.hasErrors()) {
@@ -55,4 +58,5 @@ public class QuestionController {
 		this.questionService.create(questionForm.getSubject(), questionForm.getContent(), siteUser); //질문을 저장한다.
 		return "redirect:/question/list"; //질문 저장 후 질문 목록으로 이동
 	}
+
 }
